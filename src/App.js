@@ -10,7 +10,7 @@ class App extends React.Component {
       name: "",
       rollNo: "",
       data : [],
-      index :0
+      index : 0
     }
   }
 
@@ -26,20 +26,20 @@ class App extends React.Component {
     toast.success(message, {position: toast.POSITION.TOP_RIGHT});
   }
 
-  save() {
+   save() {
     if (this.state.rollNo === "") {
-        return document.getElementById("rollnoError").classList.remove("hidden")
-    } else {
-    
-      document.getElementById("rollnoError").classList.add("hidden")  
+      return document.getElementById("rollnoError").classList.remove("hidden")
+  } else {
+  
+    document.getElementById("rollnoError").classList.add("hidden")  
+  }
+
+  if (this.state.name === "") {
+      return document.getElementById("nameError").classList.remove("hidden")
+  } else {
+
+    document.getElementById("nameError").classList.add("hidden")
     }
-
-    if (this.state.name === "") {
-        return document.getElementById("nameError").classList.remove("hidden")
-    } else {
-
-      document.getElementById("nameError").classList.add("hidden")
-      }
 
     let data = JSON.parse(localStorage.getItem("data")) || [];
     data.push({name: this.state.name,rollNo:this.state.rollNo});
@@ -54,9 +54,7 @@ class App extends React.Component {
   navigation(){
 
     let data = JSON.parse(localStorage.getItem("data")) || [];
-   
-
-      this.setState({name:data[this.index].name,rollNo:data[this.index].rollNo})
+   this.setState({name:data[this.state.index].name,rollNo:data[this.state.index].rollNo})
     
   }
 
@@ -70,12 +68,114 @@ class App extends React.Component {
 
 first(){
 
-  this.index = 0;
+  this.setState({index:0})
   this.navigation();
+}
+
+last(){
+
+  this.setState({index:this.state.data.length -1})
+ 
+  this.navigation();
+}
+
+prev(){
+
+  if(this.state.index <= 0){
+    this.setState({index:this.state.data.length -1})
+  this.navigation();
+  
+  } else {
+  this.state.index -= 1;
+  this.setState({index:this.state.index -1})
+ 
+  this.navigation();
+  }
+}
+
+
+
+next(){
+
+
+  if(this.state.index >= this.state.data.length -1){
+  this.setState({index:0});
+  this.navigation();
+  
+  } else {
+  this.state.index += 1;
+  this.setState({index:this.state.index +=1})
+ 
+  this.navigation();
+  }
+}
+
+delete(){
+
+  if (this.state.rollNo === "") {
+    return document.getElementById("rollnoError").classList.remove("hidden")
+} else {
+
+  document.getElementById("rollnoError").classList.add("hidden")  
+}
+
+if (this.state.name === "") {
+    return document.getElementById("nameError").classList.remove("hidden")
+} else {
+
+  document.getElementById("nameError").classList.add("hidden")
+  }
+
+
+  let data = this.state.data;
+ let req = data.filter(x => x.rollNo !== this.state.rollNo)
+ this.setState({data:req});
+ localStorage.setItem("data",JSON.stringify(req))
+
+ this.notify("Successfully Deleted");
+ this.clear();
+}
+
+update(){
+  if (this.state.rollNo === "") {
+    return document.getElementById("rollnoError").classList.remove("hidden")
+} else {
+
+  document.getElementById("rollnoError").classList.add("hidden")  
+}
+
+if (this.state.name === "") {
+    return document.getElementById("nameError").classList.remove("hidden")
+} else {
+
+  document.getElementById("nameError").classList.add("hidden")
+  }
+let data = this.state.data;
+
+  let index = data.findIndex(x => x.rollNo === this.state.rollNo);
+
+  data[index].name = this.state.name;
+
+  this.setState({data});
+ localStorage.setItem("data",JSON.stringify(data))
+
+ this.notify("Successfully Updated");
+ this.clear();
+
+
+
+
+
+
+
+
+
+
 
 
 
 }
+
 
 
   render() {
@@ -114,13 +214,13 @@ first(){
                     <button onClick={() => { this.save() }} className="w-auto px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700 focus:outline-none focus:shadow-outline">
                       Save
                     </button>
-                    <button className="w-auto px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="button">
+                    <button onClick={()=>{this.update()}} className="w-auto px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="button">
                       Update
                     </button>
-                    <button className="w-auto px-4 py-2 font-bold text-white bg-red-500 rounded-full hover:bg-red-700 focus:outline-none focus:shadow-outline" type="button">
+                    <button  onClick={()=>{this.delete()}} className="w-auto px-4 py-2 font-bold text-white bg-red-500 rounded-full hover:bg-red-700 focus:outline-none focus:shadow-outline" type="button">
                       Delete
                     </button>
-                    <button className="w-auto px-4 py-2 font-bold text-white bg-yellow-500 rounded-full hover:bg-yellow-700 focus:outline-none focus:shadow-outline" type="button">
+                    <button onClick={() => { this.cler() }} className="w-auto px-4 py-2 font-bold text-white bg-yellow-500 rounded-full hover:bg-yellow-700 focus:outline-none focus:shadow-outline" type="button">
                       Clear
                     </button>
 
@@ -132,13 +232,13 @@ first(){
                     <button onClick={() => { this.first() }} className="w-auto px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="button">
                       First
                     </button>
-                    <button className="w-auto px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="button">
+                    <button onClick={() => { this.prev() }} className="w-auto px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="button">
                       Prev
                     </button>
-                    <button className="w-auto px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="button">
+                    <button onClick={() => { this.next() }}className="w-auto px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="button">
                       Next
                     </button>
-                    <button className="w-auto px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="button">
+                    <button onClick={() => { this.last() }} className="w-auto px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="button">
                       Last
                     </button>
 
@@ -158,25 +258,25 @@ first(){
 
 
       
-<div class=" mx-[100px]">
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+<div className=" mx-[100px]">
+    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                     Roll No
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" className="px-6 py-3">
                    Name
                 </th>
             </tr>
         </thead>
         <tbody> 
           {this.state.data.map(data =>{
-           return <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+           return <tr key ={data.rollNo} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {data.rollNo}
                 </th>
-                <td class="px-6 py-4">
+                <td className="px-6 py-4">
                   {data.name}
                 </td>
             </tr>
