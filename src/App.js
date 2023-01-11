@@ -1,5 +1,4 @@
 import React from 'react';
-import { TextField } from '@mui/material';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 class App extends React.Component {
@@ -197,7 +196,7 @@ let data = this.state.data;
                       <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="firstName">
                         Roll No
                       </label>
-                      <input value={this.state.rollNo} onChange={(e) => { this.updateState(e) }} name="rollNo" className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="firstName" type="text" placeholder="First Name" />
+                      <input value={this.state.rollNo} onChange={(e) => { this.updateState(e) }} name="rollNo" className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="firstName" type="text" placeholder="Roll No" />
                       <p id="rollnoError" className="hidden  text-xs italic text-red-500">Roll No can not be empty.</p>
 
                     </div>
@@ -205,7 +204,7 @@ let data = this.state.data;
                       <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="lastName">
                         Name
                       </label>
-                      <input value={this.state.name} onChange={(e) => { this.updateState(e) }} name="name" className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="lastName" type="text" placeholder="Last Name" />
+                      <input value={this.state.name} onChange={(e) => { this.updateState(e) }} name="name" className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" id="lastName" type="text" placeholder="Name" />
                       <p id="nameError" className=" hidden text-xs italic text-red-500">Please choose a password.</p>
 
                     </div>
