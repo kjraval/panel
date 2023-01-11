@@ -15,6 +15,7 @@ class App extends React.Component {
 
   clear() {
     this.setState({ name: "", rollNo: "" })
+    
   }
 
   updateState = e => {
